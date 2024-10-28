@@ -1,7 +1,7 @@
 {
   "name": "backxacademy",
   "version": "1.0.0",
-  "description": "Proyecto backend Node.js para XAcademy",
+  "description": "Proyecto backend api express Node.js para XAcademy",
   "author": "asf",
   "license": "MIT",
   "main": "index.js",
