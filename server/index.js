@@ -1,28 +1,27 @@
 const express = require("express");
-const cors = require("cors");
 const app = express();
-// Middleware para procesar JSON
-app.use(express.json());
-// const sequelize = require("providers/storageProviders")
-// sequelize.get_connection().query("select * from users")
+const connection = require("./config/dbconnection");
+// Middleware
+const { logging, middleJson } = require("./middleware");
+app.use(logging);
+app.use(middleJson);
 
-app.use(
-    cors({
-      origin: "*",
-      methods: ["GET", "POST", "PUT", "DELETE"],
-      credentials: true,
-    })
-  );
+const { femalePlayersRouter, malePlayersRouter } = require("./routes");
 
-  app.get("/", (req, res) => {
-    res.send("Servidor con Express");
-  });
+//Routers
+app.use("/api/femalePlayers", femalePlayersRouter);
 
-const PUERTO = process.env.PORT||3001;
+app.use("/api/malePlayers", malePlayersRouter);
+
+app.get("/", (req, res) => {
+  res.send("Servidor con Express");
+});
+
+//Server
+const PUERTO = process.env.PORT || 3001;
 
 app.listen(PUERTO, () => {
   console.log(`Servidor escuchando en http://www.localhost:${PUERTO}...`);
 });
 
-
-  module.exports=app;
+module.exports = app;
