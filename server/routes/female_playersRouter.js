@@ -1,35 +1,36 @@
 const express = require("express");
-// const db= require("../db")
-const axios= require("axios");
-// const { db }= require("../db/db")
-//Creamos el router para players
+
+//Creamos el router para femaleplayers
 const femalePlayersRouter = express.Router();
 
-//Creamos instancia de la base de datos
+//importar el index controller
+const playersController = require("../controllers");
 
-femalePlayersRouter.use(express.json());
+//Ruta Get
+femalePlayersRouter.get("/", playersController.getPlayers);
 
-//Get
-femalePlayersRouter.get("/", (req, res) => {
-  res.send("Lista de jugadoras");
-});
+//Ruta Get por id
+femalePlayersRouter.get("/:playerId", playersController.getId);
 
-//get por id
-femalePlayersRouter.get("/:playerId", (req, res)=>
-{
-  const playerId= req.params.playerId;
-  res.send({id:playerId});
-}
+//Ruta Delete
+femalePlayersRouter.delete(
+  "/deletePlayer/:playerId",
+  playersController.deletePlayer
 );
 
+//Ruta Post
+femalePlayersRouter.post("/newFemalePlayer", playersController.createPlayer);
 
+//Ruta PUT
+femalePlayersRouter.put("/editPlayer/:playerId", playersController.editPlayer);
 
-// femalePlayersRouter.post("/newPlayer", (req, res)=>{
-//   const {nombre, email} = req.body;
-//   res.send(newPlayer);
-// }
-// )
-
+//Se anula con el otro get. PREGUNTAR
+//  femalePlayersRouter.get("/name", (req, res) => {
+//   res.setHeader("Content-Type", "application/json");
+//   const name = req.query.name;
+//   const resultado= members.filter((res)=>res.name==name)
+//   res.send(resultado);
+// });
 
 //Exportamos el enrutador
-module.exports.femalePlayersRouter = femalePlayersRouter;
+module.exports = femalePlayersRouter;
