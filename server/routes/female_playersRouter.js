@@ -9,6 +9,7 @@ const playersController = require("../controllers");
 //Ruta Get
 femalePlayersRouter.get("/", playersController.getPlayers);
 
+
 //Ruta Get por id
 femalePlayersRouter.get("/:playerId", playersController.getId);
 
