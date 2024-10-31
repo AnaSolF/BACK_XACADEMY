@@ -6,12 +6,18 @@ const { logging, middleJson } = require("./middleware");
 app.use(logging);
 app.use(middleJson);
 
-const { femalePlayersRouter, malePlayersRouter } = require("./routes");
+const {
+  femalePlayersRouter,
+  malePlayersRouter,
+  newsPlayersRouter,
+} = require("./routes");
 
 //Routers
 app.use("/api/femalePlayers", femalePlayersRouter);
 
 app.use("/api/malePlayers", malePlayersRouter);
+
+app.use("/api/newsPlayers", newsPlayersRouter);
 
 app.get("/", (req, res) => {
   res.send("Servidor con Express");

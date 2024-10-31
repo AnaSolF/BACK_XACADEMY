@@ -1,10 +1,13 @@
 const express= require("express");
 //Creamos el router para maleplayers
 const malePlayersRouter = express.Router();
+const playersController = require("../controllers");
 
-malePlayersRouter.get("/", (req,res)=>{
-    res.send("Lista de jugadores")
-});
+//Ruta Get por nombre de tabla
+malePlayersRouter.get("/:tableName", playersController.getPlayers);
+
+//Ruta Get por male player tabla y ID
+malePlayersRouter.get("/:tableName/:playerId", playersController.getId);
 
 //Exportamos el enrutador
 module.exports= malePlayersRouter;
