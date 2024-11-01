@@ -8,7 +8,9 @@ const playersController = require("../controllers");
 usersRouter.get("/:tableName", playersController.getPlayers);
 
 //Filtrar usuario por id
-// usersRouter.get("/:tableName/:playerId", playersController.getId);
+usersRouter.get("/:tableName/:playerId", playersController.getId);
+
+//Autenticación mediante JWT de usuario y password
 usersRouter.post("/login", playersController.login);
 
 //Crear usuario
