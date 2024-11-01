@@ -6,13 +6,11 @@ const femalePlayersRouter = express.Router();
 const playersController = require("../controllers");
 
 
-//Ruta Get filtro rn routers por tabla
+//Ruta Get filtro por tabla
 femalePlayersRouter.get("/:tableName", playersController.getPlayers);
 
 //Ruta Get por tabla y id
 femalePlayersRouter.get("/:tableName/:playerId", playersController.getId);
-
-
 
 //Se anula con el otro get. PREGUNTAR
 //  femalePlayersRouter.get("/name", (req, res) => {

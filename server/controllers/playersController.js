@@ -1,6 +1,5 @@
-const { player } = require("../models");
 const playerServices = require("../services");
-const { members } = require("../models/femalePlayers.json");
+const jwt= require('jsonwebtoken');
 
 //Get players
 async function getPlayers(req, res) {
@@ -35,15 +34,14 @@ async function deletePlayer(req, res) {
   try {
     const result = await playerServices.deletePlayer(playerId, tableName);
     if (result.affectedRows > 0) {
-      res.status(200).json({ message: `Jugador con id ${playerId} eliminado` });
+      res.status(200).json({ message: `Id: ${playerId} eliminado` });
     } else {
-      res.status(404).json({ message: `Jugador con id ${playerId} no encontrado` });
+      res.status(404).json({ message: `${playerId} no encontrado` });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
-
 
 //Edit player
 async function editPlayer(req, res) {
@@ -58,28 +56,45 @@ async function editPlayer(req, res) {
   try {
     const result = await playerServices.editPlayer(playerId, tableName, column, value);
     if (result.affectedRows > 0) {
-      res.status(200).json({ message: `Jugador con id ${playerId} actualizado` });
+      res.status(200).json({ message: `Registro actualizado` });
     } else {
-      res.status(404).json({ message: `Jugador con id ${playerId} no encontrado` });
+      res.status(404).json({ message: `${playerId} no encontrado` });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-
 //Create player
 async function createPlayer(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { tableName } = req.params;
-  const playerData = req.body; // Objeto con los datos del jugador a crear
-
+  const playerData = req.body; 
   try {
     const result = await playerServices.createPlayer(tableName, playerData);
-    res.status(201).json({ message: `Jugador creado con ID ${result.insertId}`, id: result.insertId });
+    res.status(201).json({ message: `Registro creado con ID ${result.insertId}`, id: result.insertId });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-module.exports = { getPlayers, getId, deletePlayer, editPlayer, createPlayer };
+async function login(req, res) {
+  const { username, password } = req.body;
+  
+  try {
+    const user = await playerServices.authenticateUser(username, password);
+    
+    if (!user) {
+      return res.status(401).json({ message: "Credenciales inválidas" });
+    }
+
+    const payload = { id: user.id, username: user.username };
+    const token = jwt.sign(payload, "tu_clave_secreta", { expiresIn: "1h" });
+
+    res.status(200).json({ message: "Inicio de sesión exitoso", token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { getPlayers, getId, deletePlayer, editPlayer, createPlayer, login };

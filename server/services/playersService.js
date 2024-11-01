@@ -1,7 +1,8 @@
 const { SELECT } = require("sequelize/lib/query-types");
 const connection = require("../config/dbconnection");
+const bcrypt = require("bcryptjs");
 
-//Volvemos varibale nombre la tabla para pasarla como parámetro en el controller
+//Volvemos variable el nombre la tabla para pasarla como parámetro en el controller
 async function getPlayers(tableName) {
   return new Promise((resolve, reject) => {
     const query = `SELECT * FROM ??`;
@@ -14,7 +15,9 @@ async function getPlayers(tableName) {
   });
 }
 
-//Sólo lo aplicamos para la tabla news_players
+//Siguientes funciones sólo las aplicamos para las tablas news_players y users
+
+//Delete player
 async function deletePlayer(playerId, tableName) {
   return new Promise((resolve, reject) => {
     const query = `DELETE FROM ?? WHERE id = ?`;
@@ -28,7 +31,6 @@ async function deletePlayer(playerId, tableName) {
 }
 
 // Edit player
-// Archivo services - playerServices.js
 async function editPlayer(playerId, tableName, column, value) {
   return new Promise((resolve, reject) => {
     const query = `UPDATE ?? SET ?? = ? WHERE id = ?`;
@@ -54,9 +56,28 @@ async function createPlayer(tableName, playerData) {
   });
 }
 
+//Authenticate user 
+async function authenticateUser(username, password) {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM users WHERE username = ?`;
+    connection.query(query, [username], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      if (results.length > 0) {
+        resolve(results[0]); // Devuelve el primer resultado si existe
+      } else {
+        resolve(null);
+      }
+    });
+  });
+}
+
+
 module.exports = {
   getPlayers,
   editPlayer,
   deletePlayer,
   createPlayer,
+  authenticateUser
 };
