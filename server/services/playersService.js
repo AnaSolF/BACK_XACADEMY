@@ -15,8 +15,8 @@ async function getPlayers(tableName) {
   });
 }
 
-//Siguientes funciones sólo las aplicamos para las tablas news_players y users
-
+//Siguientes funciones sólo las aplicamos para las tablas news_players y algunas a users
+//Investigué sobre cómo volver variables las queries de mysql
 //Delete player
 async function deletePlayer(playerId, tableName) {
   return new Promise((resolve, reject) => {
